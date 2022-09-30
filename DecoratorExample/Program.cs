@@ -26,9 +26,9 @@ public static class Program
         IProvideProducts productProvider =
             provider.GetRequiredService<IProvideProducts>();
 
-        IEnumerable<Product> products = await productProvider.GetProductsAsync();
+        IEnumerable<Product> products1 = await productProvider.GetProductsAsync();
 
-        foreach (Product p in products.Take(3))
+        foreach (Product p in products1.Take(3))
         {
             Console.WriteLine(p.Description);
         }

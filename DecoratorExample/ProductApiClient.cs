@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -17,8 +16,6 @@ public sealed class ProductApiClient : IProvideProducts
 
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
-        Console.WriteLine("Fetching products from source api...");
-
         HttpResponseMessage response = await httpClient.GetAsync("products");
 
         response.EnsureSuccessStatusCode();

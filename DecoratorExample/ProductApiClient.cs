@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace DecoratorExample;
 
@@ -23,5 +24,26 @@ public sealed class ProductApiClient : IProvideProducts
         Root rootResponse = await response.Content.ReadFromJsonAsync<Root>();
 
         return rootResponse?.Products;
+    }
+}
+
+public sealed class CachingProductApiClient : IProvideProductsWithCache
+{
+    readonly IProvideProducts innerProvider;
+    readonly IMemoryCache cache;
+
+    public CachingProductApiClient(
+        IProvideProducts innerProvider,
+        IMemoryCache cache)
+    {
+        this.innerProvider = innerProvider;
+        this.cache = cache;
+    }
+
+    public async Task<IEnumerable<Product>> GetProductsAsync()
+    {
+        return await cache.GetOrCreateAsync(
+            "products",
+            entry => innerProvider.GetProductsAsync());
     }
 }

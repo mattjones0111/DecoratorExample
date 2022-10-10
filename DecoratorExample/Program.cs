@@ -19,12 +19,15 @@ public static class Program
                 configure.BaseAddress = new Uri("https://dummyjson.com/");
             });
 
+        services.AddMemoryCache();
+
         services.AddTransient<IProvideProducts, ProductApiClient>();
+        services.AddTransient<IProvideProductsWithCache, CachingProductApiClient>();
 
         IServiceProvider provider = services.BuildServiceProvider();
 
-        IProvideProducts productProvider =
-            provider.GetRequiredService<IProvideProducts>();
+        IProvideProductsWithCache productProvider =
+            provider.GetRequiredService<IProvideProductsWithCache>();
 
         IEnumerable<Product> products1 = await productProvider.GetProductsAsync();
 

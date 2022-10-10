@@ -19,6 +19,7 @@ public static class Program
                 configure.BaseAddress = new Uri("https://dummyjson.com/");
             });
 
+        services.AddMemoryCache();
         services.AddTransient<IProvideProducts, ProductApiClient>();
 
         IServiceProvider provider = services.BuildServiceProvider();
